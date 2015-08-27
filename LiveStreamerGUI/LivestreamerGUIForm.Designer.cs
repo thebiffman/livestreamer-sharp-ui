@@ -29,32 +29,32 @@
         private void InitializeComponent()
         {
             this.gbOpenStream = new System.Windows.Forms.GroupBox();
+            this.cbUseCustomApp = new System.Windows.Forms.CheckBox();
+            this.btnLivestreamerLocBrowse = new System.Windows.Forms.Button();
+            this.lblLivestreamerLoc = new System.Windows.Forms.Label();
+            this.tbLivestreamerLoc = new System.Windows.Forms.TextBox();
             this.btnOpen = new System.Windows.Forms.Button();
             this.cbQuality = new System.Windows.Forms.ComboBox();
-            this.tbStreamURL = new System.Windows.Forms.TextBox();
             this.lblStreamURL = new System.Windows.Forms.Label();
             this.btnApplicationBrowse = new System.Windows.Forms.Button();
             this.lblOpenWith = new System.Windows.Forms.Label();
             this.tbApplication = new System.Windows.Forms.TextBox();
-            this.btnLivestreamerLocBrowse = new System.Windows.Forms.Button();
-            this.lblLivestreamerLoc = new System.Windows.Forms.Label();
-            this.tbLivestreamerLoc = new System.Windows.Forms.TextBox();
             this.gbOutput = new System.Windows.Forms.GroupBox();
             this.tbOutput = new System.Windows.Forms.TextBox();
-            this.cbUseCustomApp = new System.Windows.Forms.CheckBox();
+            this.cbStreamURLs = new System.Windows.Forms.ComboBox();
             this.gbOpenStream.SuspendLayout();
             this.gbOutput.SuspendLayout();
             this.SuspendLayout();
             // 
             // gbOpenStream
             // 
+            this.gbOpenStream.Controls.Add(this.cbStreamURLs);
             this.gbOpenStream.Controls.Add(this.cbUseCustomApp);
             this.gbOpenStream.Controls.Add(this.btnLivestreamerLocBrowse);
             this.gbOpenStream.Controls.Add(this.lblLivestreamerLoc);
             this.gbOpenStream.Controls.Add(this.tbLivestreamerLoc);
             this.gbOpenStream.Controls.Add(this.btnOpen);
             this.gbOpenStream.Controls.Add(this.cbQuality);
-            this.gbOpenStream.Controls.Add(this.tbStreamURL);
             this.gbOpenStream.Controls.Add(this.lblStreamURL);
             this.gbOpenStream.Controls.Add(this.btnApplicationBrowse);
             this.gbOpenStream.Controls.Add(this.lblOpenWith);
@@ -66,6 +66,42 @@
             this.gbOpenStream.TabIndex = 0;
             this.gbOpenStream.TabStop = false;
             this.gbOpenStream.Text = "Open stream";
+            // 
+            // cbUseCustomApp
+            // 
+            this.cbUseCustomApp.AutoSize = true;
+            this.cbUseCustomApp.Location = new System.Drawing.Point(13, 115);
+            this.cbUseCustomApp.Name = "cbUseCustomApp";
+            this.cbUseCustomApp.Size = new System.Drawing.Size(15, 14);
+            this.cbUseCustomApp.TabIndex = 9;
+            this.cbUseCustomApp.UseVisualStyleBackColor = true;
+            this.cbUseCustomApp.CheckedChanged += new System.EventHandler(this.cbUseCustomApp_CheckedChanged);
+            // 
+            // btnLivestreamerLocBrowse
+            // 
+            this.btnLivestreamerLocBrowse.Location = new System.Drawing.Point(520, 49);
+            this.btnLivestreamerLocBrowse.Name = "btnLivestreamerLocBrowse";
+            this.btnLivestreamerLocBrowse.Size = new System.Drawing.Size(28, 27);
+            this.btnLivestreamerLocBrowse.TabIndex = 2;
+            this.btnLivestreamerLocBrowse.Text = "...";
+            this.btnLivestreamerLocBrowse.UseVisualStyleBackColor = true;
+            this.btnLivestreamerLocBrowse.Click += new System.EventHandler(this.btnLivestreamerLocBrowse_Click);
+            // 
+            // lblLivestreamerLoc
+            // 
+            this.lblLivestreamerLoc.AutoSize = true;
+            this.lblLivestreamerLoc.Location = new System.Drawing.Point(7, 26);
+            this.lblLivestreamerLoc.Name = "lblLivestreamerLoc";
+            this.lblLivestreamerLoc.Size = new System.Drawing.Size(151, 20);
+            this.lblLivestreamerLoc.TabIndex = 8;
+            this.lblLivestreamerLoc.Text = "Livestreamer location";
+            // 
+            // tbLivestreamerLoc
+            // 
+            this.tbLivestreamerLoc.Location = new System.Drawing.Point(11, 49);
+            this.tbLivestreamerLoc.Name = "tbLivestreamerLoc";
+            this.tbLivestreamerLoc.Size = new System.Drawing.Size(503, 27);
+            this.tbLivestreamerLoc.TabIndex = 1;
             // 
             // btnOpen
             // 
@@ -84,13 +120,6 @@
             this.cbQuality.Name = "cbQuality";
             this.cbQuality.Size = new System.Drawing.Size(99, 28);
             this.cbQuality.TabIndex = 6;
-            // 
-            // tbStreamURL
-            // 
-            this.tbStreamURL.Location = new System.Drawing.Point(11, 170);
-            this.tbStreamURL.Name = "tbStreamURL";
-            this.tbStreamURL.Size = new System.Drawing.Size(352, 27);
-            this.tbStreamURL.TabIndex = 5;
             // 
             // lblStreamURL
             // 
@@ -127,32 +156,6 @@
             this.tbApplication.Size = new System.Drawing.Size(481, 27);
             this.tbApplication.TabIndex = 3;
             // 
-            // btnLivestreamerLocBrowse
-            // 
-            this.btnLivestreamerLocBrowse.Location = new System.Drawing.Point(520, 49);
-            this.btnLivestreamerLocBrowse.Name = "btnLivestreamerLocBrowse";
-            this.btnLivestreamerLocBrowse.Size = new System.Drawing.Size(28, 27);
-            this.btnLivestreamerLocBrowse.TabIndex = 2;
-            this.btnLivestreamerLocBrowse.Text = "...";
-            this.btnLivestreamerLocBrowse.UseVisualStyleBackColor = true;
-            this.btnLivestreamerLocBrowse.Click += new System.EventHandler(this.btnLivestreamerLocBrowse_Click);
-            // 
-            // lblLivestreamerLoc
-            // 
-            this.lblLivestreamerLoc.AutoSize = true;
-            this.lblLivestreamerLoc.Location = new System.Drawing.Point(7, 26);
-            this.lblLivestreamerLoc.Name = "lblLivestreamerLoc";
-            this.lblLivestreamerLoc.Size = new System.Drawing.Size(151, 20);
-            this.lblLivestreamerLoc.TabIndex = 8;
-            this.lblLivestreamerLoc.Text = "Livestreamer location";
-            // 
-            // tbLivestreamerLoc
-            // 
-            this.tbLivestreamerLoc.Location = new System.Drawing.Point(11, 49);
-            this.tbLivestreamerLoc.Name = "tbLivestreamerLoc";
-            this.tbLivestreamerLoc.Size = new System.Drawing.Size(503, 27);
-            this.tbLivestreamerLoc.TabIndex = 1;
-            // 
             // gbOutput
             // 
             this.gbOutput.Controls.Add(this.tbOutput);
@@ -174,15 +177,13 @@
             this.tbOutput.Size = new System.Drawing.Size(537, 238);
             this.tbOutput.TabIndex = 0;
             // 
-            // cbUseCustomApp
+            // cbStreamURLs
             // 
-            this.cbUseCustomApp.AutoSize = true;
-            this.cbUseCustomApp.Location = new System.Drawing.Point(13, 115);
-            this.cbUseCustomApp.Name = "cbUseCustomApp";
-            this.cbUseCustomApp.Size = new System.Drawing.Size(15, 14);
-            this.cbUseCustomApp.TabIndex = 9;
-            this.cbUseCustomApp.UseVisualStyleBackColor = true;
-            this.cbUseCustomApp.CheckedChanged += new System.EventHandler(this.cbUseCustomApp_CheckedChanged);
+            this.cbStreamURLs.FormattingEnabled = true;
+            this.cbStreamURLs.Location = new System.Drawing.Point(13, 170);
+            this.cbStreamURLs.Name = "cbStreamURLs";
+            this.cbStreamURLs.Size = new System.Drawing.Size(350, 28);
+            this.cbStreamURLs.TabIndex = 10;
             // 
             // LivestreamerGuiForm
             // 
@@ -207,7 +208,6 @@
         private System.Windows.Forms.GroupBox gbOpenStream;
         private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.ComboBox cbQuality;
-        private System.Windows.Forms.TextBox tbStreamURL;
         private System.Windows.Forms.Label lblStreamURL;
         private System.Windows.Forms.Button btnApplicationBrowse;
         private System.Windows.Forms.Label lblOpenWith;
@@ -218,6 +218,7 @@
         private System.Windows.Forms.GroupBox gbOutput;
         private System.Windows.Forms.TextBox tbOutput;
         private System.Windows.Forms.CheckBox cbUseCustomApp;
+        private System.Windows.Forms.ComboBox cbStreamURLs;
     }
 }
 

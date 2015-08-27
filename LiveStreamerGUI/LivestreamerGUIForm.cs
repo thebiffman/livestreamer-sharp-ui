@@ -9,12 +9,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace LiveStreamerGUI
 {
     public partial class LivestreamerGuiForm : Form
     {
-
+        private ApplicationData _applicationData;
+        private BindingSource _urlsBinding;
+        
         /// <summary>
         /// Not a very reliable method of finding vlc, which is why the default 
         /// behavior is to let livestreamer choose.
@@ -28,6 +31,18 @@ namespace LiveStreamerGUI
         public LivestreamerGuiForm()
         {
             InitializeComponent();
+
+            Application.ApplicationExit += new EventHandler(this.OnApplicationExit);
+
+            // Read history from XML.
+            DeserializeAppData();
+
+            _urlsBinding = new BindingSource();
+            _urlsBinding.DataSource = _applicationData.Urls;
+            cbStreamURLs.DataSource = _urlsBinding;
+
+            //cbStreamURLs.DataSource = _recentUrls;
+
             cbUseCustomApp.Checked = false;
             HandleApplicationCheckbox();
         }
@@ -48,6 +63,56 @@ namespace LiveStreamerGUI
             }
         }
 
+        public void DeserializeAppData()
+        {
+            try
+            {
+                FileStream xmlFile = new FileStream("ApplicationData.xml", FileMode.Open);
+                if (!xmlFile.CanRead)
+                {
+                    _applicationData = new ApplicationData();
+                }
+                else
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(ApplicationData));
+                    _applicationData = (ApplicationData)serializer.Deserialize(xmlFile);
+                    tbLivestreamerLoc.Text = _applicationData.LivestreamerLoc;
+                }
+
+                xmlFile.Close();
+            }
+            catch (FileNotFoundException fileNotFoundException)
+            {
+                AddOutput("No saved application data found (" + fileNotFoundException.Message + ").");
+                _applicationData = new ApplicationData();
+            }
+            
+        }
+
+        public void SerializeAppData()
+        {
+            try
+            {
+                FileStream xmlFile = new FileStream("ApplicationData.xml", FileMode.Create);
+
+                if (!xmlFile.CanWrite)
+                {
+                    MessageBox.Show("Could not save application data to file (cannot write).");
+                }
+                else
+                {
+                    XmlSerializer serializer = new XmlSerializer(_applicationData.GetType());
+                    serializer.Serialize(xmlFile, _applicationData);
+                }
+
+                xmlFile.Close();
+            }
+            catch (UnauthorizedAccessException accessException)
+            {
+                MessageBox.Show("Could not save application data to file ("+ accessException.Message + ").");
+            }
+        }
+
         /// <summary>
         /// Starts livestreamer with the correct parameters and with the output 
         /// redirected to the output textbox.
@@ -62,7 +127,7 @@ namespace LiveStreamerGUI
 
             Process livestreamerProcess = new Process();
             livestreamerProcess.StartInfo.FileName = tbLivestreamerLoc.Text;
-            livestreamerProcess.StartInfo.Arguments = tbStreamURL.Text + " " + "best";
+            livestreamerProcess.StartInfo.Arguments = cbStreamURLs.Text + " " + "best";
             livestreamerProcess.StartInfo.UseShellExecute = false;
             livestreamerProcess.StartInfo.RedirectStandardOutput = true;
             livestreamerProcess.StartInfo.RedirectStandardError = true;
@@ -77,6 +142,29 @@ namespace LiveStreamerGUI
             livestreamerProcess.BeginErrorReadLine();
             livestreamerProcess.BeginOutputReadLine();
 
+            UpdateHistory();
+
+        }
+
+        private void UpdateHistory()
+        {
+
+            _applicationData.LivestreamerLoc = tbLivestreamerLoc.Text;
+   
+            if (_applicationData.Urls.Count > 9)
+            {
+                _applicationData.Urls.RemoveAt(_applicationData.Urls.Count-1);
+            }
+
+            _urlsBinding.Insert(0, cbStreamURLs.Text);
+
+            cbStreamURLs.SelectedIndex = 0;
+
+            // DEBUG
+            foreach (string url in _applicationData.Urls)
+            {
+                AddOutput("URL: " + url);
+            }
         }
 
         /// <summary>
@@ -161,6 +249,12 @@ namespace LiveStreamerGUI
                 tbApplication.Enabled = false;
                 tbApplication.Text = "Letting livestreamer decide";
             }
+        }
+
+        private void OnApplicationExit(object sender, EventArgs e)
+        {
+            // When the application is exiting, write the application data to file.
+            SerializeAppData();
         }
     }
 }
