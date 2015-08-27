@@ -256,5 +256,18 @@ namespace LiveStreamerGUI
             // When the application is exiting, write the application data to file.
             SerializeAppData();
         }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Livestreamer Sharp UI \n" +
+                            "Version 0.2\n" +
+                            "https://github.com/thebiffman/livestreamer-sharp-ui" + "\n" +
+                            "https://github.com/chrippa/livestreamer/");
+        }
     }
 }

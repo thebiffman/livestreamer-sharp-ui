@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.gbOpenStream = new System.Windows.Forms.GroupBox();
+            this.cbStreamURLs = new System.Windows.Forms.ComboBox();
             this.cbUseCustomApp = new System.Windows.Forms.CheckBox();
             this.btnLivestreamerLocBrowse = new System.Windows.Forms.Button();
             this.lblLivestreamerLoc = new System.Windows.Forms.Label();
@@ -41,9 +42,13 @@
             this.tbApplication = new System.Windows.Forms.TextBox();
             this.gbOutput = new System.Windows.Forms.GroupBox();
             this.tbOutput = new System.Windows.Forms.TextBox();
-            this.cbStreamURLs = new System.Windows.Forms.ComboBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gbOpenStream.SuspendLayout();
             this.gbOutput.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // gbOpenStream
@@ -60,12 +65,20 @@
             this.gbOpenStream.Controls.Add(this.lblOpenWith);
             this.gbOpenStream.Controls.Add(this.tbApplication);
             this.gbOpenStream.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbOpenStream.Location = new System.Drawing.Point(12, 10);
+            this.gbOpenStream.Location = new System.Drawing.Point(12, 34);
             this.gbOpenStream.Name = "gbOpenStream";
             this.gbOpenStream.Size = new System.Drawing.Size(559, 213);
             this.gbOpenStream.TabIndex = 0;
             this.gbOpenStream.TabStop = false;
             this.gbOpenStream.Text = "Open stream";
+            // 
+            // cbStreamURLs
+            // 
+            this.cbStreamURLs.FormattingEnabled = true;
+            this.cbStreamURLs.Location = new System.Drawing.Point(13, 170);
+            this.cbStreamURLs.Name = "cbStreamURLs";
+            this.cbStreamURLs.Size = new System.Drawing.Size(350, 28);
+            this.cbStreamURLs.TabIndex = 10;
             // 
             // cbUseCustomApp
             // 
@@ -160,7 +173,7 @@
             // 
             this.gbOutput.Controls.Add(this.tbOutput);
             this.gbOutput.Font = new System.Drawing.Font("Segoe UI", 11.25F);
-            this.gbOutput.Location = new System.Drawing.Point(12, 229);
+            this.gbOutput.Location = new System.Drawing.Point(12, 253);
             this.gbOutput.Name = "gbOutput";
             this.gbOutput.Size = new System.Drawing.Size(559, 280);
             this.gbOutput.TabIndex = 1;
@@ -177,29 +190,59 @@
             this.tbOutput.Size = new System.Drawing.Size(537, 238);
             this.tbOutput.TabIndex = 0;
             // 
-            // cbStreamURLs
+            // menuStrip1
             // 
-            this.cbStreamURLs.FormattingEnabled = true;
-            this.cbStreamURLs.Location = new System.Drawing.Point(13, 170);
-            this.cbStreamURLs.Name = "cbStreamURLs";
-            this.cbStreamURLs.Size = new System.Drawing.Size(350, 28);
-            this.cbStreamURLs.TabIndex = 10;
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.aboutToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(583, 24);
+            this.menuStrip1.TabIndex = 2;
+            this.menuStrip1.Text = "menuStrip";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // LivestreamerGuiForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(583, 521);
+            this.ClientSize = new System.Drawing.Size(583, 548);
             this.Controls.Add(this.gbOutput);
             this.Controls.Add(this.gbOpenStream);
+            this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "LivestreamerGuiForm";
-            this.Text = "Livestreamer GUI";
+            this.Text = "Livestreamer Sharp UI";
             this.gbOpenStream.ResumeLayout(false);
             this.gbOpenStream.PerformLayout();
             this.gbOutput.ResumeLayout(false);
             this.gbOutput.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -219,6 +262,10 @@
         private System.Windows.Forms.TextBox tbOutput;
         private System.Windows.Forms.CheckBox cbUseCustomApp;
         private System.Windows.Forms.ComboBox cbStreamURLs;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
     }
 }
 
