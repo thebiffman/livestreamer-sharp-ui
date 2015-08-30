@@ -1,6 +1,8 @@
 # livestreamer-sharp-ui
 A very simple interface for the command-line application livestreamer (https://github.com/chrippa/livestreamer/) by chrippa, made with C# and Windows Forms. 
 
+![Screenshot of Livestreamer Sharp UI](http://biffnet.se/livestreamer-sharp-ui/livestreamer-sharp-ui.png)
+
 ## Requirements
 You need .NET framework installed and livestreamer downloaded to be able to use this application.
 
