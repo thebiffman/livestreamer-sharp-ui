@@ -7,8 +7,8 @@ A very simple interface for the command-line application livestreamer (https://g
 You need .NET framework installed and livestreamer downloaded to be able to use this application.
 
 ## Features todo
-- Able to choose quality (its always best now
-- Probably more stuff
+- Able to choose quality (its always best now)
+- Actually using the chosen media player. (now it always lets livestreamer decide)
 
 ## Changelog
 
