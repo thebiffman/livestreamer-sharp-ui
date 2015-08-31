@@ -28,21 +28,25 @@ namespace LiveStreamerGUI
             "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe"
         };
 
+        private readonly string XML_FILE_NAME = "ApplicationData.xml";
+
         public LivestreamerGuiForm()
         {
             InitializeComponent();
 
+            // Makes sure that the "save to XML" code is run when the application are closed.
             Application.ApplicationExit += new EventHandler(this.OnApplicationExit);
 
             // Read history from XML.
             DeserializeAppData();
 
+            // Binds the list of URLs to the combobox.
             _urlsBinding = new BindingSource();
             _urlsBinding.DataSource = _applicationData.Urls;
             cbStreamURLs.DataSource = _urlsBinding;
 
-            //cbStreamURLs.DataSource = _recentUrls;
-
+            // Sets default state of the "Open with" checkbox and updates 
+            // the UI to reflect the choice.
             cbUseCustomApp.Checked = false;
             HandleApplicationCheckbox();
         }
@@ -63,11 +67,16 @@ namespace LiveStreamerGUI
             }
         }
 
+        /// <summary>
+        /// Attempts to deserialize the Application Data object from the XML file 
+        /// defined in the XML_FILE_NAME variable. If no file was found a new
+        /// instance will be created. 
+        /// </summary>
         public void DeserializeAppData()
         {
             try
             {
-                FileStream xmlFile = new FileStream("ApplicationData.xml", FileMode.Open);
+                FileStream xmlFile = new FileStream(XML_FILE_NAME, FileMode.Open);
                 if (!xmlFile.CanRead)
                 {
                     _applicationData = new ApplicationData();
@@ -89,11 +98,15 @@ namespace LiveStreamerGUI
             
         }
 
+        /// <summary>
+        /// Attempts to serialize the Application Data object to a XML file with
+        /// the name defined in the XML_FILE_NAME variable. 
+        /// </summary>
         public void SerializeAppData()
         {
             try
             {
-                FileStream xmlFile = new FileStream("ApplicationData.xml", FileMode.Create);
+                FileStream xmlFile = new FileStream(XML_FILE_NAME, FileMode.Create);
 
                 if (!xmlFile.CanWrite)
                 {
@@ -118,8 +131,6 @@ namespace LiveStreamerGUI
         /// redirected to the output textbox.
         /// Stolen from: http://stackoverflow.com/questions/415620/redirect-console-output-to-textbox-in-separate-program
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void btnOpen_Click(object sender, EventArgs e)
         {
             // Old method
@@ -146,9 +157,13 @@ namespace LiveStreamerGUI
 
         }
 
+        /// <summary>
+        /// Adds the current stream URL to history list (and removes the last one if
+        /// there are more than 10 entries in the list). Also saves the current 
+        /// livestreamer.exe location in the Application Data object.
+        /// </summary>
         private void UpdateHistory()
         {
-
             _applicationData.LivestreamerLoc = tbLivestreamerLoc.Text;
    
             if (_applicationData.Urls.Count > 9)
@@ -160,11 +175,12 @@ namespace LiveStreamerGUI
 
             cbStreamURLs.SelectedIndex = 0;
 
-            // DEBUG
+            #if DEBUG
             foreach (string url in _applicationData.Urls)
             {
                 AddOutput("URL: " + url);
             }
+            #endif
         }
 
         /// <summary>
@@ -257,17 +273,55 @@ namespace LiveStreamerGUI
             SerializeAppData();
         }
 
+        /// <summary>
+        /// The File->Exit option in the menu. Closes the application.
+        /// </summary>
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
+        /// <summary>
+        /// The about option in the menu. Shows a small popup window with the version number and 
+        /// links to this applications GitHub page as well as the livestreamer GitHub page.
+        /// </summary>
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Livestreamer Sharp UI \n" +
                             "Version 0.2\n" +
                             "https://github.com/thebiffman/livestreamer-sharp-ui" + "\n" +
                             "https://github.com/chrippa/livestreamer/");
+        }
+
+        /// <summary>
+        /// Supported plugins link. Opens a new DocumentationWindow and loads the supported 
+        /// plugins page from the livestreamer documenation.
+        /// </summary>
+        private void linkPlugins_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            DocumentationWindow pluginsWindow = new DocumentationWindow("http://docs.livestreamer.io/plugin_matrix.html");
+            pluginsWindow.Text = "Supported plugins";
+            pluginsWindow.Show();
+        }
+
+        /// <summary>
+        /// Supported players link. Opens a new DocumentationWindow and loads the supported 
+        /// players page from the livestreamer documenation.
+        /// </summary>
+        private void linkPlayers_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            DocumentationWindow pluginsWindow = new DocumentationWindow("http://docs.livestreamer.io/players.html");
+            pluginsWindow.Text = "Supported players";
+            pluginsWindow.Show();
+        }
+
+        /// <summary>
+        /// Download livestreamer link. Opens the install section of the livestreamer 
+        /// documentation in the default browser.
+        /// </summary>
+        private void linkDownload_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://docs.livestreamer.io/install.html");
         }
     }
 }

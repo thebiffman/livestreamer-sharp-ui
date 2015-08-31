@@ -47,6 +47,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationData.cs" />
+    <Compile Include="DocumentationWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DocumentationWindow.Designer.cs">
+      <DependentUpon>DocumentationWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="LivestreamerGUIForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -55,6 +61,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="DocumentationWindow.resx">
+      <DependentUpon>DocumentationWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LivestreamerGUIForm.resx">
       <DependentUpon>LivestreamerGUIForm.cs</DependentUpon>
     </EmbeddedResource>

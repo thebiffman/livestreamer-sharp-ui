@@ -44,8 +44,11 @@
             this.tbOutput = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.linkPlugins = new System.Windows.Forms.LinkLabel();
+            this.linkPlayers = new System.Windows.Forms.LinkLabel();
+            this.linkDownload = new System.Windows.Forms.LinkLabel();
             this.gbOpenStream.SuspendLayout();
             this.gbOutput.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -53,6 +56,9 @@
             // 
             // gbOpenStream
             // 
+            this.gbOpenStream.Controls.Add(this.linkDownload);
+            this.gbOpenStream.Controls.Add(this.linkPlayers);
+            this.gbOpenStream.Controls.Add(this.linkPlugins);
             this.gbOpenStream.Controls.Add(this.cbStreamURLs);
             this.gbOpenStream.Controls.Add(this.cbUseCustomApp);
             this.gbOpenStream.Controls.Add(this.btnLivestreamerLocBrowse);
@@ -209,6 +215,13 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
@@ -216,12 +229,41 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // exitToolStripMenuItem
+            // linkPlugins
             // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.linkPlugins.AutoSize = true;
+            this.linkPlugins.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkPlugins.Location = new System.Drawing.Point(92, 152);
+            this.linkPlugins.Name = "linkPlugins";
+            this.linkPlugins.Size = new System.Drawing.Size(110, 13);
+            this.linkPlugins.TabIndex = 11;
+            this.linkPlugins.TabStop = true;
+            this.linkPlugins.Text = "(Supported plugins)";
+            this.linkPlugins.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkPlugins_LinkClicked);
+            // 
+            // linkPlayers
+            // 
+            this.linkPlayers.AutoSize = true;
+            this.linkPlayers.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkPlayers.Location = new System.Drawing.Point(82, 91);
+            this.linkPlayers.Name = "linkPlayers";
+            this.linkPlayers.Size = new System.Drawing.Size(107, 13);
+            this.linkPlayers.TabIndex = 12;
+            this.linkPlayers.TabStop = true;
+            this.linkPlayers.Text = "(Supported players)";
+            this.linkPlayers.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkPlayers_LinkClicked);
+            // 
+            // linkDownload
+            // 
+            this.linkDownload.AutoSize = true;
+            this.linkDownload.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkDownload.Location = new System.Drawing.Point(157, 31);
+            this.linkDownload.Name = "linkDownload";
+            this.linkDownload.Size = new System.Drawing.Size(93, 13);
+            this.linkDownload.TabIndex = 13;
+            this.linkDownload.TabStop = true;
+            this.linkDownload.Text = "(Download here)";
+            this.linkDownload.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkDownload_LinkClicked);
             // 
             // LivestreamerGuiForm
             // 
@@ -266,6 +308,9 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.LinkLabel linkPlugins;
+        private System.Windows.Forms.LinkLabel linkPlayers;
+        private System.Windows.Forms.LinkLabel linkDownload;
     }
 }
 
