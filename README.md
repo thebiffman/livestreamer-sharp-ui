@@ -9,6 +9,7 @@ You need .NET framework installed and livestreamer downloaded to be able to use 
 ## Features todo
 - Able to choose quality (its always best now)
 - Actually using the chosen media player. (now it always lets livestreamer decide)
+- An icon!
 
 ## Changelog
 
