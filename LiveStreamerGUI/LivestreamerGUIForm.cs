@@ -29,6 +29,7 @@ namespace LiveStreamerGUI
         };
 
         private readonly string XML_FILE_NAME = "ApplicationData.xml";
+        private bool _vlcIsFound = false;
 
         public LivestreamerGuiForm()
         {
@@ -45,10 +46,9 @@ namespace LiveStreamerGUI
             _urlsBinding.DataSource = _applicationData.Urls;
             cbStreamURLs.DataSource = _urlsBinding;
 
-            // Sets default state of the "Open with" checkbox and updates 
-            // the UI to reflect the choice.
-            cbUseCustomApp.Checked = false;
-            HandleApplicationCheckbox();
+            cbQuality.SelectedIndex = 0;
+
+            HandleRadioButtonsChange();
         }
 
         /// <summary>
@@ -56,12 +56,16 @@ namespace LiveStreamerGUI
         /// </summary>
         private void LocateVlc()
         {
+            if (_vlcIsFound)
+                return;
+
             foreach (string loc in VLC_LOCS)
             {
                 if (File.Exists(loc))
                 {
                     tbApplication.Text = loc;
                     AddOutput("Found VLC: " + loc);
+                    _vlcIsFound = true;
                     break;
                 }
             }
@@ -136,9 +140,22 @@ namespace LiveStreamerGUI
             // Old method
             // Process.Start(tbLivestreamerLoc.Text, tbStreamURL.Text + " " + "best");
 
+            StringBuilder sb = new StringBuilder();
+            sb.Append(cbStreamURLs.Text);
+            sb.Append(" ");
+            sb.Append(cbQuality.SelectedItem.ToString());
+
+            if (rbFile.Checked)
+            {
+                sb.Append(" -o ");
+                sb.Append(tbFile.Text);
+            }
+            
+            //sb.Append(" ");
+
             Process livestreamerProcess = new Process();
             livestreamerProcess.StartInfo.FileName = tbLivestreamerLoc.Text;
-            livestreamerProcess.StartInfo.Arguments = cbStreamURLs.Text + " " + "best";
+            livestreamerProcess.StartInfo.Arguments = sb.ToString();
             livestreamerProcess.StartInfo.UseShellExecute = false;
             livestreamerProcess.StartInfo.RedirectStandardOutput = true;
             livestreamerProcess.StartInfo.RedirectStandardError = true;
@@ -206,6 +223,7 @@ namespace LiveStreamerGUI
         /// <param name="text">The text to add to the output textbox.</param>
         private void AddOutput(string text)
         {
+            //Debug.WriteLine("AddOutput:" + text);
             if (this.tbOutput.InvokeRequired)
             {
                 SetOutputCallback d = new SetOutputCallback(AddOutput);
@@ -213,14 +231,62 @@ namespace LiveStreamerGUI
             }
             else
             {
+                //if (text.Contains("[download]") && tbOutput.Text.Substring(text.LastIndexOf('\n')).Contains("[download]"))
+                //{
+                //    Debug.WriteLine("AddOutput: Contains [download]");
+                //    tbOutput.Text = tbOutput.Text. Substring(0, text.LastIndexOf('\n'));
+                //}
+
                 string timestamp = DateTime.Now.ToString("[HH:mm:ss]");
                 tbOutput.AppendText(timestamp + text + "\n");
             }
         }
 
-        private void btnBrowse_Click(object sender, EventArgs e)
+        private void btnApplicationBrowse_Click(object sender, EventArgs e)
+        {
+            string fileName = SelectFileDialog(false, "Application file (.exe)|*.exe");
+
+            if (fileName != null)
+            {
+                tbApplication.Text = fileName;
+            }
+        }
+
+        /// <summary>
+        /// Shows a OpenFileDialog with the given filter.
+        /// </summary>
+        /// <param name="filter">The filter to be used in the dialog.</param>
+        /// <param name="saveFile">True to show save file dialog, otherwise show open file dialog</param>
+        /// <returns>The selected file, or null if no file was selected.</returns>
+        private string SelectFileDialog(bool saveFile, string filter)
         {
 
+            if (!saveFile)
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog
+                {
+                    Filter = filter,
+                    FilterIndex = 1,
+                    Multiselect = false
+                };
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    return openFileDialog.FileName;
+            }
+            else
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog()
+                {
+                    Filter = filter,
+                    FilterIndex = 1,
+                    RestoreDirectory = true
+                };
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    return saveFileDialog.FileName;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -229,41 +295,58 @@ namespace LiveStreamerGUI
         /// </summary>
         private void btnLivestreamerLocBrowse_Click(object sender, EventArgs e)
         {
-            OpenFileDialog livestreamerLocDialog = new OpenFileDialog();
+            string fileName = SelectFileDialog(false, "Livestreamer exe file (livestreamer.exe)|livestreamer.exe");
 
-            livestreamerLocDialog.Filter = "Livestreamer exe file (livestreamer.exe)|livestreamer.exe";
-            livestreamerLocDialog.FilterIndex = 1;
-            livestreamerLocDialog.Multiselect = false;
-
-            if (livestreamerLocDialog.ShowDialog() == DialogResult.OK)
+            if (fileName != null)
             {
-                tbLivestreamerLoc.Text = livestreamerLocDialog.FileName;
+                tbLivestreamerLoc.Text = fileName;
             }
         }
 
         /// <summary>
-        /// Method for when the checkbox cbUseCustomApp changes.
+        /// Handles all events when RadioButtons are changed
         /// </summary>
-        private void cbUseCustomApp_CheckedChanged(object sender, EventArgs e)
+        /// <param name="sender">The radiobutton.</param>
+        private void radioButtons_CheckedChanged(object sender, EventArgs e)
         {
-            HandleApplicationCheckbox();
+            RadioButton radioButton = sender as RadioButton;
+            if (radioButton != null)
+            {
+                if (radioButton.Checked)
+                {
+                    HandleRadioButtonsChange();
+                }
+            }
+
         }
 
         /// <summary>
-        /// Used when the checkbox changes state (and at startup).
-        /// Enables or disables the media player path textbox.
+        /// Set up the GUI according to the selected radio button
         /// </summary>
-        private void HandleApplicationCheckbox()
+        private void HandleRadioButtonsChange()
         {
-            if (cbUseCustomApp.Checked)
-            {
-                tbApplication.Enabled = true;
-                LocateVlc();
-            }
-            else
+            if (rbDefault.Checked)
             {
                 tbApplication.Enabled = false;
-                tbApplication.Text = "Letting livestreamer decide";
+                tbFile.Enabled = false;
+
+                btnApplicationBrowse.Enabled = false;
+                btnFileBrowse.Enabled = false;
+            }
+            else if (rbApplication.Checked)
+            {
+                tbApplication.Enabled = true;
+                tbFile.Enabled = false;
+                LocateVlc();
+                btnApplicationBrowse.Enabled = true;
+                btnFileBrowse.Enabled = false;
+            }
+            else if (rbFile.Checked)
+            {
+                tbApplication.Enabled = false;
+                tbFile.Enabled = true;
+                btnApplicationBrowse.Enabled = false;
+                btnFileBrowse.Enabled = true;
             }
         }
 
@@ -322,6 +405,16 @@ namespace LiveStreamerGUI
         private void linkDownload_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("http://docs.livestreamer.io/install.html");
+        }
+
+        private void btnFileBrowse_Click(object sender, EventArgs e)
+        {
+            string fileName = SelectFileDialog(true, "Media file|*.*");
+
+            if (fileName != null)
+            {
+                tbFile.Text = fileName;
+            }
         }
     }
 }
